@@ -89,12 +89,7 @@ services:
 
 volumes:
   homeassistant:
-    external: true
   zigbee2mqtt:
-    external: true
   zwavejsui:
-    external: true
   code-server:
-    external: true
   mealie:
-    external: true
