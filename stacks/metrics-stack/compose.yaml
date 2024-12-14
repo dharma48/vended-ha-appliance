@@ -1,0 +1,37 @@
+services:
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics:v1.107.0@sha256:b6ea7d78fb46986533439d6131b0ef3f0ddaec39270bb58c6cc2b74b3d9195d0
+    # ports:
+    #   - 8428:8428
+    #   - 8089:8089
+    #   - 8089:8089/udp
+    #   - 2003:2003
+    #   - 2003:2003/udp
+    #   - 4242:4242
+    volumes:
+      - vmdata:/storage
+      - /opt/stack-data/metrics-stack/victoriametrics/config:/etc/prometheus
+    command:
+      - "--promscrape.config=/etc/prometheus/prometheus.yml"
+      - "-retentionPeriod=2y"
+    restart: always
+
+  # Grafana instance configured with VictoriaMetrics as datasource
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
+    ports:
+      - 3001:3000
+    volumes:
+      - grafanadata:/var/lib/grafana
+    environment:
+      - GF_AUTH_PROXY_ENABLED=true
+      - GF_AUTH_PROXY_HEADER_NAME=X-WEBAUTH-USER
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/api/ingress/grafana/
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    restart: always
+
+volumes:
+  vmdata: {}
+  grafanadata: {}

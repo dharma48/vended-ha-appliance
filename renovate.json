@@ -1,6 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "docker:enableMajor",
+    "docker:pinDigests",
+    ":assignee(clintkev251)"
+  ],
+  "docker-compose": {
+    "fileMatch": [
+      "(^|/)(?:docker-)?compose[^/]*\\.ya?ml$"
+    ]
+  },
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 50,
+  "hostRules": [
+    {
+      "hostType": "docker",
+      "matchHost": "index.docker.io",
+      "username": "clintkev251",
+      "password": "{{ secrets.dockerhubKey }}"
+    }
   ]
 }

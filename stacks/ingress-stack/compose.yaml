@@ -1,0 +1,17 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2024.12.1@sha256:fc6afe4a5dcf2a801b39fcd538c9d5d4d53ea229fe9976584835bdb8c185ed5d
+    container_name: cloudflared
+    restart: always
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
+    networks:
+      - metrics-stack_default
+      - ingress-stack
+      - home-stack_default
+
+networks:
+  ingress-stack:
+  metrics-stack_default:
+    external: true
+  home-stack_default:
+    external: true

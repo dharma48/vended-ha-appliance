@@ -1,0 +1,99 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    restart: unless-stopped
+    image: ghcr.io/home-assistant/home-assistant:2024.12.3@sha256:e20ca1d7b578cd98d6868aefa80ac2b4ade9826f14e10e3ea206975b8c6aeb8f
+    volumes:
+      - homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=${TZ}
+    network_mode: host
+    privileged: true
+
+  mosquitto:
+    container_name: mosquitto
+    restart: always
+    image: eclipse-mosquitto:2.0.20@sha256:8b396cec28cd5e8e1a3aba1d9abdbddd42c454c80f703e77c1bec56e152fa54e
+    ports:
+      - 1883:1883
+    volumes:
+      - /opt/stack-data/home-stack/mosquitto:/etc/mosquitto
+      - /opt/stack-data/home-stack/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:1.42.0@sha256:732ae43d714610040bd049487b60af3b2dbcfdefb5f169897455b60d715e2131
+    restart: unless-stopped
+    volumes:
+      - zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+        - 8080:8080
+    environment:
+      - TZ=${TZ}
+    devices:
+      - ${ZIGBEE_DEV_PATH}:/dev/ttyACM0
+
+  zwave-js-ui:
+    container_name: zwave-js-ui
+    image: zwavejs/zwave-js-ui:9.28.0@sha256:6888670fdbcb011ba7418377893e15503594b99562400e6cc244f85c95a62b45
+    restart: always
+    tty: true
+    stop_signal: SIGINT
+    environment:
+      - ZWAVEJS_EXTERNAL_CONFIG=/usr/src/app/store/.config-db
+      - TZ=${TZ}
+    devices:
+      - ${ZWAVE_DEV_PATH}:/dev/zwave
+    volumes:
+      - zwavejsui:/usr/src/app/store
+    ports:
+      - '8091:8091' # port for web interface
+      - '3000:3000' # port for Z-Wave JS websocket server
+
+  coder:
+    container_name: code-server
+    image: linuxserver/code-server:4.95.3@sha256:6b04b865eb1a1d4892789cb41c175b0158dab91a0ec36987f0094d63f746ebba
+    restart: always
+    volumes:
+      - code-server:/config
+      - homeassistant:/workspace
+    environment:
+      - DEFAULT_WORKSPACE=/workspace
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+    ports:
+      - 8443:8443
+
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:v2.3.0
+    container_name: mealie
+    restart: always
+    ports:
+        - "9925:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - mealie-data:/app/data/
+    environment:
+      # Set Backend ENV Variables Here
+      ALLOW_SIGNUP: "false"
+      PUID: 1000
+      PGID: 1000
+      TZ: ${TZ}
+      BASE_URL: https://${MEALIE_DOMAIN}
+
+volumes:
+  homeassistant:
+    external: true
+  zigbee2mqtt:
+    external: true
+  zwavejsui:
+    external: true
+  code-server:
+    external: true
+  mealie-data:
