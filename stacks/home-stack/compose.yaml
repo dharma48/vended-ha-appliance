@@ -78,7 +78,7 @@ services:
         limits:
           memory: 1000M
     volumes:
-      - mealie-data:/app/data/
+      - mealie:/app/data/
     environment:
       # Set Backend ENV Variables Here
       ALLOW_SIGNUP: "false"
@@ -96,4 +96,5 @@ volumes:
     external: true
   code-server:
     external: true
-  mealie-data:
+  mealie:
+    external: true

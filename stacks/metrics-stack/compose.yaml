@@ -33,5 +33,7 @@ services:
     restart: always
 
 volumes:
-  vmdata: {}
-  grafanadata: {}
+  vmdata:
+    external: true
+  grafanadata:
+    external: true
