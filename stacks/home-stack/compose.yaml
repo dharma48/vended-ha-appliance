@@ -54,7 +54,7 @@ services:
 
   coder:
     container_name: code-server
-    image: linuxserver/code-server:4.96.2@sha256:c181b7a2ae59940f276c89fd86cd4f220cdb87886d771b5becf3d4156b3c0bc1
+    image: linuxserver/code-server:4.96.4@sha256:5469aa7f5244ca7ebdc5d28aea927d4edf0f6d1d6cd5cbea05872672b8f66225
     restart: always
     volumes:
       - code-server:/config
