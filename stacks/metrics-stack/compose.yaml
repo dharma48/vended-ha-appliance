@@ -20,7 +20,7 @@ services:
   # Grafana instance configured with VictoriaMetrics as datasource
   grafana:
     container_name: grafana
-    image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
+    image: grafana/grafana:12.0.1@sha256:06dc8d60e184705e5dc00e051a6d92342a44010d7d5e538d0a36339e85abb9b7
     ports:
       - 3001:3000
     volumes:
