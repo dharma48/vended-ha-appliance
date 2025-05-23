@@ -2,7 +2,7 @@ services:
   homeassistant:
     container_name: homeassistant
     restart: unless-stopped
-    image: ghcr.io/home-assistant/home-assistant:2025.1.0@sha256:7db850eff6b858b6d01860cd76a10d993861f9bff140de85734ce01d153a62ca
+    image: ghcr.io/home-assistant/home-assistant:2025.5.3@sha256:8a99004ff832dbd535e6ac4d141042bc31141ff6a86b4d5bb288b3680fbceac1
     volumes:
       - homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
