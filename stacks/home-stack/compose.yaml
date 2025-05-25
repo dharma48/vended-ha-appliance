@@ -11,15 +11,16 @@ services:
     network_mode: host
     privileged: true
 
-  mosquitto:
-    container_name: mosquitto
+  emqx:
+    image: emqx/emqx:5.8
     restart: always
-    image: eclipse-mosquitto:2.0.21@sha256:94f5a3d7deafa59fa3440d227ddad558f59d293c612138de841eec61bfa4d353
-    ports:
-      - 1883:1883
+    environment:
+      EMQX_NAME: hass_emqx
+      EMQX_HOST: 127.0.0.1
     volumes:
-      - /opt/stack-data/home-stack/mosquitto:/etc/mosquitto
-      - /opt/stack-data/home-stack/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - vol-emqx-data:/opt/emqx/data
+      - vol-emqx-etc:/opt/emqx/etc
+      - vol-emqx-log:/opt/emqx/log
 
   zigbee2mqtt:
     container_name: zigbee2mqtt
@@ -67,25 +68,25 @@ services:
     ports:
       - 8443:8443
 
-  mealie:
-    image: ghcr.io/mealie-recipes/mealie:v2.8.0@sha256:63aef46d90975d9cf9c0fdb9399fc2fe36acd222e1db6be99c504b9ccdbee967
-    container_name: mealie
-    restart: always
-    ports:
-        - "9925:9000"
-    deploy:
-      resources:
-        limits:
-          memory: 1000M
-    volumes:
-      - mealie:/app/data/
-    environment:
-      # Set Backend ENV Variables Here
-      ALLOW_SIGNUP: "false"
-      PUID: 1000
-      PGID: 1000
-      TZ: ${TZ}
-      BASE_URL: https://${MEALIE_DOMAIN}
+  # mealie:
+  #   image: ghcr.io/mealie-recipes/mealie:v2.8.0@sha256:63aef46d90975d9cf9c0fdb9399fc2fe36acd222e1db6be99c504b9ccdbee967
+  #   container_name: mealie
+  #   restart: always
+  #   ports:
+  #       - "9925:9000"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 1000M
+  #   volumes:
+  #     - mealie:/app/data/
+  #   environment:
+  #     # Set Backend ENV Variables Here
+  #     ALLOW_SIGNUP: "false"
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: ${TZ}
+  #     BASE_URL: https://${MEALIE_DOMAIN}
 
 volumes:
   homeassistant:
@@ -93,3 +94,6 @@ volumes:
   zwavejsui:
   code-server:
   mealie:
+  vol-emqx-data:
+  vol-emqx-etc:
+  vol-emqx-log:
