@@ -12,7 +12,7 @@ services:
     privileged: true
 
   emqx:
-    image: emqx/emqx:5.8
+    image: emqx/emqx:5.8@sha256:a1e3d10fa1dcc8c94325b815a93b5b5974253a97cb36470b44e47d5d3ef9cd13
     restart: always
     environment:
       EMQX_NAME: hass_emqx
