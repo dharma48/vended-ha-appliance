@@ -17,6 +17,8 @@ services:
     environment:
       EMQX_NAME: hass_emqx
       EMQX_HOST: 127.0.0.1
+    ports:
+      - 1883:1883
     volumes:
       - vol-emqx-data:/opt/emqx/data
       - vol-emqx-etc:/opt/emqx/etc
