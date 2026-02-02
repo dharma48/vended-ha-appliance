@@ -1,7 +1,7 @@
 services:
   victoriametrics:
     container_name: victoriametrics
-    image: victoriametrics/victoria-metrics:v1.129.1@sha256:ab12985b467509f37e55835a314f0e6a60e3c82730ab3636666843135dea5033
+    image: victoriametrics/victoria-metrics:v1.135.0@sha256:647f1a19274a362692c0968b926f4acecfdac9488bbf70f1985925d1717063b5
     # ports:
     #   - 8428:8428
     #   - 8089:8089
