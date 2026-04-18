@@ -13,7 +13,7 @@ services:
 
   mosquitto:
     container_name: mosquitto
-    image: eclipse-mosquitto:2.1.2-alpine
+    image: eclipse-mosquitto:2.1.2-alpine@sha256:a908c65cc8e67ec9d292ef27c2c0360dbaaee7eb1b935cdd194e67697f15dea1
     restart: always
     ports:
       - 1883:1883
