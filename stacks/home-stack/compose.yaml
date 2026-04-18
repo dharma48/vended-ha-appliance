@@ -25,6 +25,14 @@ services:
       - vol-emqx-etc:/opt/emqx/etc
       - vol-emqx-log:/opt/emqx/log
 
+  mosquitto:
+    image: eclipse-mosquitto:2.1.2-alpine
+    restart: always
+    # ports:
+    #   - 1883:1883
+    volumes:
+      - mosquitto:/mosquitto
+
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:2.9.2@sha256:2a21bbf7a664a149024bbe1f776e3151f28ed9db15948270dcbffb89544a41f0
@@ -100,3 +108,4 @@ volumes:
   vol-emqx-data:
   vol-emqx-etc:
   vol-emqx-log:
+  mosquitto:
